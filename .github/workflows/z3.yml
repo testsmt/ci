@@ -25,4 +25,4 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
-          python z3/main.py
+          python -m z3.main

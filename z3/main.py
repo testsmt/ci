@@ -1,6 +1,10 @@
-from source.utils import get_latest_release, download_file, extract_file, execute_command
 import os
 import re
+
+from utils.command import execute_command
+from utils.download import download_file, extract_file
+from utils.github import get_latest_release
+
 
 def main():
     owner = 'Z3Prover'
