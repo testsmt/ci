@@ -1,4 +1,4 @@
-name: CI
+name: Test z3
 
 on:
   push:
@@ -26,3 +26,11 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
           python -m z3.main
+
+      - name: Clone ET_private
+        run: |
+          git clone https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/wintered/ET_private.git
+          ls
+        env:
+          GIT_USER: ${{ secrets.PAT_TOKEN }}
+
