@@ -34,6 +34,8 @@ jobs:
       - name: Clone ET_private
         run: |
           git clone --branch smt-solver-evolution https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/wintered/ET_private.git
+          echo "Listing contents after cloning:"
+          ls -la ET_private
         env:
           GIT_USER: ${{ secrets.PAT_TOKEN }}
 
@@ -43,9 +45,10 @@ jobs:
           source ./venv/bin/activate
           pip install poetry
 
-      - name: Install dependencies using Poetry
+      - name: Install dependencies using Poetry inside ET_private
         run: |
-          source ./venv/bin/activate
+          cd ET_private
+          source ../venv/bin/activate
           poetry install
 
       - name: Install dependencies and run tests
