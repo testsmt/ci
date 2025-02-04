@@ -20,17 +20,36 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies and run tests
+      - name: Install system dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
-          python -m z3.main
+          sudo apt update
+          sudo apt install -y ghc cabal-install
+
+      - name: Install Haskell dependencies
+        run: |
+          cabal update
+          cabal install --lib testing-feat
+          cabal install --lib size-based
 
       - name: Clone ET_private
         run: |
-          git clone https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/wintered/ET_private.git
-          ls
+          git clone --branch smt-solver-evolution https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/wintered/ET_private.git
         env:
           GIT_USER: ${{ secrets.PAT_TOKEN }}
 
+      - name: Set up Python environment
+        run: |
+          python3 -m venv ./venv
+          source ./venv/bin/activate
+          pip install poetry
+
+      - name: Install dependencies using Poetry
+        run: |
+          source ./venv/bin/activate
+          poetry install
+
+      - name: Install dependencies and run tests
+        run: |
+          source venv/bin/activate
+          pip install -r requirements.txt
+          python -m z3.main
