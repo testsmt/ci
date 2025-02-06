@@ -1,10 +1,24 @@
 import os
 import re
 
-from utils.command import execute_command
 from utils.download import download_file, extract_file
 from utils.github import get_latest_release
+from utils.os import write_to_file
+from utils.pipeline import prepare_directories, generate_tests, run_solvers, create_database, import_data_into_db, \
+    gather_statistics
 
+theories = [
+    "Core",
+    "Ints",
+    "Reals",
+    "RealInts",
+    "Arrays",
+    "Bitvectors",
+    "FP",
+    "Strings"
+]
+
+NUM_TESTS = int(os.getenv("NUM_TESTS", 100))
 
 def main():
     owner = 'Z3Prover'
@@ -29,8 +43,17 @@ def main():
     extract_file(local_filename, extract_to='./', rename_to="solver")
     os.chmod(path_to_solver_binary, 0o755)
 
-    help_output = execute_command(path_to_solver_binary, ["--help"])
-    print(help_output)
+    write_to_file("./solvers.cfg", "~/solver/bin/z3")
+
+    for theory in theories:
+        prepare_directories(theory)
+        generate_tests(theory, NUM_TESTS)
+        run_solvers(theory)
+        conn, cursor = create_database(theory)
+        import_data_into_db(theory, conn, cursor)
+        gather_statistics(theory, cursor, NUM_TESTS)
+        conn.close()
+
 
 if __name__ == '__main__':
     main()

@@ -1,6 +1,8 @@
 import subprocess
 
-def execute_command(binary_path, args):
+def execute_command(binary_path, args=None):
+    if args is None:
+        args = []
     try:
         command = [binary_path] + args
         result = subprocess.run(command, capture_output=True, text=True, check=True)
