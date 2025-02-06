@@ -68,8 +68,10 @@ def run_solvers(theory):
             print(f"Processing file: {smt2_file}")
 
             # Execute the command for each .smt2 file
-            execute_command(ORACLE_PATH,
-                [smt2_file,
+            execute_command("python",
+       [
+                ORACLE_PATH,
+                smt2_file,
                 f"{smt2_file}.time",
                 SOLVERS_CFG_PATH,
                 bugs_dir,
