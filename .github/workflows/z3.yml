@@ -34,8 +34,6 @@ jobs:
       - name: Clone ET_private
         run: |
           git clone --branch smt-solver-evolution https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/wintered/ET_private.git
-          echo "Listing contents after cloning:"
-          ls -la ET_private
         env:
           GIT_USER: ${{ secrets.PAT_TOKEN }}
 
@@ -58,7 +56,7 @@ jobs:
           cp ET_private/z_old/et/data/*.{cfg,g4} et_config/
           cp ET_private/z_old/bin/oracle ./oracle
           chmod +x ./oracle
-          find . -type f \( -name "*.cfg" -o -name "*.g4" \) -print
+          ls ./et_config
 
       - name: Install dependencies and run tests
         env:
@@ -66,5 +64,4 @@ jobs:
         run: |
           source venv/bin/activate
           pip install -r requirements.txt
-          ls
           python -m z3.main
