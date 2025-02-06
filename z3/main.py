@@ -1,6 +1,7 @@
 import os
 import re
 
+from utils.command import execute_command
 from utils.download import download_file, extract_file
 from utils.github import get_latest_release
 from utils.os import write_to_file
@@ -47,6 +48,14 @@ def main():
         prepare_directories(theory)
         generate_tests(theory, NUM_TESTS)
         run_solvers(theory)
+        execute_command(
+            "ls",
+            ["./results/Core/temp"]
+        )
+        execute_command(
+            "ls",
+            ["./results"]
+        )
         conn, cursor = create_database(theory)
         import_data_into_db(theory, conn, cursor)
         gather_statistics(theory, cursor, NUM_TESTS)
