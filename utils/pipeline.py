@@ -27,8 +27,12 @@ def generate_tests(theory, num_tests):
     theory_g4 = os.path.join(ET_CONFIG_PATH, f"{theory}.g4")
     theory_cfg = os.path.join(ET_CONFIG_PATH, f"{theory}.cfg")
     temp_dir = os.path.join(RESULTS_DIR, theory, "temp")
-    command = f"et --output {temp_dir} take {num_tests} {theory_g4} {theory_cfg}"
-    execute_command(command)
+    execute_command("et", [
+        "--output", temp_dir,
+        "take", str(num_tests),
+        theory_g4,
+        theory_cfg
+    ])
 
 def run_solvers(theory):
     temp_dir = os.path.join(RESULTS_DIR, theory, "temp")
