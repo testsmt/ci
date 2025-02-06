@@ -55,20 +55,26 @@ def run_solvers(theory):
     bugs_dir = os.path.join(RESULTS_DIR, theory, "bugs")
 
     try:
+        # Find all .smt2 files in the temp_dir
         find_result = execute_command("find", [temp_dir, "-name", "*.smt2"])
         smt2_files = find_result.splitlines()
 
+        # Debugging output to verify the files found
+        print(f"Found {len(smt2_files)} .smt2 files.")
+
         for smt2_file in smt2_files:
-            command = [
-                ORACLE_PATH,
-                smt2_file,
+            # Debugging output to verify each file being processed
+            print(f"Processing file: {smt2_file}")
+
+            # Execute the command for each .smt2 file
+            execute_command(ORACLE_PATH,
+                [smt2_file,
                 f"{smt2_file}.time",
                 SOLVERS_CFG_PATH,
                 bugs_dir,
                 str(TIMEOUT_IN_SECS),
                 str(MEMOUT_IN_KB)
-            ]
-            execute_command(command[0], command[1:])
+            ])
 
     except Exception as e:
         print(f"An error occurred while processing .smt2 files: {e}")
