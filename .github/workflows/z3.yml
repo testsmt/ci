@@ -66,7 +66,3 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
           python -m z3.main
-
-z3-ref -> z3-4.13.3
-z3-old-ref -> z3-4.8.11
-cvc5-ref -> cvc5-1.2.0
