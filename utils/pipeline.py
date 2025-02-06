@@ -56,9 +56,11 @@ def run_solvers(theory):
 
     try:
         # Find all .smt2 files in the temp_dir
-        find_result = execute_command("find", [temp_dir, "-name", "*.smt2"])
+        find_result = execute_command("find", [temp_dir, "-type", "f", "-name", "*.smt2"])
+
         smt2_files = find_result.splitlines()
 
+        print(smt2_files)
         # Debugging output to verify the files found
         print(f"Found {len(smt2_files)} .smt2 files.")
 
