@@ -1,6 +1,5 @@
 import os
 import sqlite3
-from distutils.util import execute
 from pathlib import Path
 
 from utils.command import execute_command
@@ -15,13 +14,19 @@ NUM_CORES = 4
 
 
 def prepare_directories(theory):
-    os.makedirs(RESULTS_DIR, exist_ok=True)
+    if not os.path.exists(RESULTS_DIR):
+        print(f"Creating RESULTS_DIR: {RESULTS_DIR}")
+        os.makedirs(RESULTS_DIR, exist_ok=True)
+
     theory_dir = os.path.join(RESULTS_DIR, theory)
-    os.makedirs(os.path.join(theory_dir, "temp"), exist_ok=True)
-    os.makedirs(os.path.join(theory_dir, "bugs"), exist_ok=True)
-    execute_command("ls")
-    execute_command(f"ls {RESULTS_DIR}")
-    execute_command(f"ls {theory_dir}")
+    temp_dir = os.path.join(theory_dir, "temp")
+    bugs_dir = os.path.join(theory_dir, "bugs")
+
+    print(f"Creating directory: {temp_dir}")
+    os.makedirs(temp_dir, exist_ok=True)
+
+    print(f"Creating directory: {bugs_dir}")
+    os.makedirs(bugs_dir, exist_ok=True)
 
 def generate_tests(theory, num_tests):
     theory_g4 = os.path.join(ET_CONFIG_PATH, f"{theory}.g4")
