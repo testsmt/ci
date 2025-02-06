@@ -61,8 +61,9 @@ jobs:
 
       - name: Install dependencies and run tests
         env:
-          NUM_TESTS: ${{ secrets.NUM_TESTS }}
+          NUM_TESTS: ${{ vars.NUM_TESTS }}
         run: |
           source venv/bin/activate
           pip install -r requirements.txt
+          echo "NUM_TESTS is set to $NUM_TESTS"
           python -m z3.main

@@ -18,14 +18,13 @@ theories = [
     "Strings"
 ]
 
-NUM_TESTS = int(os.getenv("NUM_TESTS", 100))
-
 def main():
     owner = 'Z3Prover'
     repo = 'z3'
     pattern = re.compile(r'z3-\d+\.\d+\.\d+-x64-glibc-\d+\.\d+\.zip')
     path_to_solver_binary = "./solver/bin/z3"
-
+    NUM_TESTS = int(os.getenv("NUM_TESTS", 100))
+    print("python: ", NUM_TESTS)
     latest_release = get_latest_release(owner, repo)
 
     matching_asset = None
