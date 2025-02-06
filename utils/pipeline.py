@@ -9,7 +9,7 @@ MEMOUT_IN_KB = 1048576
 SOLVERS_CFG_PATH = "./solvers.cfg"
 ORACLE_PATH = "./oracle"
 ET_CONFIG_PATH = "./et_config"
-RESULTS_DIR = "results"
+RESULTS_DIR = "./results"
 NUM_CORES = 4
 
 

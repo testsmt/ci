@@ -65,5 +65,4 @@ jobs:
         run: |
           source venv/bin/activate
           pip install -r requirements.txt
-          echo "NUM_TESTS is set to $NUM_TESTS"
           python -m z3.main
