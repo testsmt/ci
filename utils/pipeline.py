@@ -57,7 +57,6 @@ def run_solvers(theory):
     try:
         # Find all .smt2 files in the temp_dir
         find_result = execute_command("find", [temp_dir, "-type", "f", "-name", "*.smt2"])
-
         smt2_files = find_result.splitlines()
 
         print(smt2_files)
@@ -76,7 +75,7 @@ def run_solvers(theory):
                 bugs_dir,
                 str(TIMEOUT_IN_SECS),
                 str(MEMOUT_IN_KB)
-            ])
+            ], shell=True)
 
     except Exception as e:
         print(f"An error occurred while processing .smt2 files: {e}")
