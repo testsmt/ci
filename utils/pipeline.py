@@ -38,13 +38,17 @@ def run_solvers(theory):
     temp_dir = os.path.join(RESULTS_DIR, theory, "temp")
     bugs_dir = os.path.join(RESULTS_DIR, theory, "bugs")
 
-    # Command to run the solvers in parallel
-    command = (
-        f"find {temp_dir} -name '*.smt2' -print0 | "
-        f"parallel -0 -j{NUM_CORES} --eta --progress --bar {ORACLE_PATH} "
-        f"{{}} {{}}.time {SOLVERS_CFG_PATH} {bugs_dir} {TIMEOUT_IN_SECS} {MEMOUT_IN_KB}"
-    )
-    execute_command(command)
+    find_command = [
+        "find", temp_dir, "-name", "*.smt2", "-print0"
+    ]
+
+    parallel_command = [
+        "parallel", "-0", f"-j{NUM_CORES}", "--eta", "--progress", "--bar", ORACLE_PATH,
+        "{}", "{}.time", SOLVERS_CFG_PATH, bugs_dir, str(TIMEOUT_IN_SECS), str(MEMOUT_IN_KB)
+    ]
+
+    full_command = f"{' '.join(find_command)} | {' '.join(parallel_command)}"
+    execute_command("/bin/bash", ["-c", full_command])
 
 
 def create_database(theory):
