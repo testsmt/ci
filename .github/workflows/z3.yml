@@ -58,6 +58,7 @@ jobs:
           cp ET_private/z_old/et/data/*.{cfg,g4} et_config/
           cp ET_private/z_old/bin/oracle ./oracle
           chmod +x ./oracle
+          find . -type f \( -name "*.cfg" -o -name "*.g4" \) -print
 
       - name: Install dependencies and run tests
         env:
@@ -65,4 +66,5 @@ jobs:
         run: |
           source venv/bin/activate
           pip install -r requirements.txt
+          ls
           python -m z3.main
