@@ -1,5 +1,6 @@
 import os
 import sqlite3
+from distutils.util import execute
 from pathlib import Path
 
 from utils.command import execute_command
@@ -18,6 +19,9 @@ def prepare_directories(theory):
     theory_dir = os.path.join(RESULTS_DIR, theory)
     os.makedirs(os.path.join(theory_dir, "temp"), exist_ok=True)
     os.makedirs(os.path.join(theory_dir, "bugs"), exist_ok=True)
+    execute_command("ls")
+    execute_command(f"ls {RESULTS_DIR}")
+    execute_command(f"ls {theory_dir}")
 
 def generate_tests(theory, num_tests):
     theory_g4 = os.path.join(ET_CONFIG_PATH, f"{theory}.g4")
