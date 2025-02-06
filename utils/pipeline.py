@@ -15,17 +15,12 @@ NUM_CORES = 4
 
 def prepare_directories(theory):
     if not os.path.exists(RESULTS_DIR):
-        print(f"Creating RESULTS_DIR: {RESULTS_DIR}")
         os.makedirs(RESULTS_DIR, exist_ok=True)
 
     theory_dir = os.path.join(RESULTS_DIR, theory)
     temp_dir = os.path.join(theory_dir, "temp")
     bugs_dir = os.path.join(theory_dir, "bugs")
-
-    print(f"Creating directory: {temp_dir}")
     os.makedirs(temp_dir, exist_ok=True)
-
-    print(f"Creating directory: {bugs_dir}")
     os.makedirs(bugs_dir, exist_ok=True)
 
 def generate_tests(theory, num_tests):
