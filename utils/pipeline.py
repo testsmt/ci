@@ -77,7 +77,7 @@ def run_solvers(theory):
                 bugs_dir,
                 str(TIMEOUT_IN_SECS),
                 str(MEMOUT_IN_KB)
-            ], shell=True)
+            ])
             print(res)
 
     except Exception as e:
