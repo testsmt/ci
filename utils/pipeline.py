@@ -34,22 +34,44 @@ def generate_tests(theory, num_tests):
         theory_cfg
     ])
 
+# def run_solvers(theory):
+#     temp_dir = os.path.join(RESULTS_DIR, theory, "temp")
+#     bugs_dir = os.path.join(RESULTS_DIR, theory, "bugs")
+#
+#     find_command = [
+#         "find", temp_dir, "-name", "*.smt2", "-print0"
+#     ]
+#
+#     parallel_command = [
+#         "parallel", "-0", f"-j{NUM_CORES}", "--eta", "--progress", "--bar", ORACLE_PATH,
+#         "{}", "{}.time", SOLVERS_CFG_PATH, bugs_dir, str(TIMEOUT_IN_SECS), str(MEMOUT_IN_KB)
+#     ]
+#
+#     full_command = f"{' '.join(find_command)} | {' '.join(parallel_command)}"
+#     execute_command("/bin/bash", ["-c", full_command])
+
 def run_solvers(theory):
     temp_dir = os.path.join(RESULTS_DIR, theory, "temp")
     bugs_dir = os.path.join(RESULTS_DIR, theory, "bugs")
 
-    find_command = [
-        "find", temp_dir, "-name", "*.smt2", "-print0"
-    ]
+    try:
+        find_result = execute_command("find", [temp_dir, "-name", "*.smt2"])
+        smt2_files = find_result.splitlines()
 
-    parallel_command = [
-        "parallel", "-0", f"-j{NUM_CORES}", "--eta", "--progress", "--bar", ORACLE_PATH,
-        "{}", "{}.time", SOLVERS_CFG_PATH, bugs_dir, str(TIMEOUT_IN_SECS), str(MEMOUT_IN_KB)
-    ]
+        for smt2_file in smt2_files:
+            command = [
+                ORACLE_PATH,
+                smt2_file,
+                f"{smt2_file}.time",
+                SOLVERS_CFG_PATH,
+                bugs_dir,
+                str(TIMEOUT_IN_SECS),
+                str(MEMOUT_IN_KB)
+            ]
+            execute_command(command[0], command[1:])
 
-    full_command = f"{' '.join(find_command)} | {' '.join(parallel_command)}"
-    execute_command("/bin/bash", ["-c", full_command])
-
+    except Exception as e:
+        print(f"An error occurred while processing .smt2 files: {e}")
 
 def create_database(theory):
     db_path = os.path.join(RESULTS_DIR, f"{theory}.sqlite3")
