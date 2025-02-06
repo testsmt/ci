@@ -1,7 +1,8 @@
 import os
 import sqlite3
 from pathlib import Path
-from command import execute_command
+
+from utils.command import execute_command
 
 TIMEOUT_IN_SECS = 8.0
 MEMOUT_IN_KB = 1048576
