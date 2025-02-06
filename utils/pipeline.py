@@ -68,7 +68,7 @@ def run_solvers(theory):
             print(f"Processing file: {smt2_file}")
 
             # Execute the command for each .smt2 file
-            execute_command("python",
+            res = execute_command("python",
        [
                 ORACLE_PATH,
                 smt2_file,
@@ -78,6 +78,7 @@ def run_solvers(theory):
                 str(TIMEOUT_IN_SECS),
                 str(MEMOUT_IN_KB)
             ], shell=True)
+            print(res)
 
     except Exception as e:
         print(f"An error occurred while processing .smt2 files: {e}")
