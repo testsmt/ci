@@ -54,8 +54,8 @@ jobs:
         run: |
           mkdir -p et_config
           cp ET_private/z_old/et/data/*.{cfg,g4} et_config/
-          cp ET_private/z_old/bin/oracle ./oracle
-          chmod +x ./oracle
+#          cp ET_private/z_old/bin/oracle ./oracle
+#          chmod +x ./oracle
 
       - name: Install dependencies and run tests
         env:
@@ -73,6 +73,12 @@ jobs:
           for theory in $(cat ./supported_theories/z3); do
             ./scripts/run_exp.sh "$theory" "$NUM_TESTS" "./solvers.cfg"
           done
+          echo "test 1:"
+          ls ./results/Core/temp
+          echo "test 2:"
+          cat ./results/Core/temp/0.smt2
+          echo "test 3:"
+          cat ./results/Core/temp/0.smt2.time
 
       - name: Store experiment results
         run: |
