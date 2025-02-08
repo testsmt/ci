@@ -14,7 +14,7 @@ num_cores=4
 result_dir="./results"
 
 # Iterate over each .smt2 file in the specified directory
-find $result_dir/$theory/temp -name "*.smt2" -print0 | while IFS= read -r -d '' file; do
-    # Call the oracle script for each file
+find $result_dir/$theory/temp -name "*.smt2" | while IFS= read -r -d '' file; do
+    echo "Processing file: $file"
     ./oracle "$file" "$file.time" "$solvers_cfg_path" "$result_dir/$theory/bugs" $timeout $memout
 done
