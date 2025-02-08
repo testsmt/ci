@@ -47,12 +47,6 @@ def main():
     for theory in theories:
         prepare_directories(theory)
         generate_tests(theory, NUM_TESTS)
-        # run_solvers(theory)
-        # conn, cursor = create_database(theory)
-        # import_data_into_db(theory, conn, cursor)
-        # gather_statistics(theory, cursor, NUM_TESTS)
-        # conn.close()
-
 
 if __name__ == '__main__':
     main()

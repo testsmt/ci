@@ -83,6 +83,8 @@ jobs:
           done
 
       - name: Gather statistics
+        env:
+          NUM_TESTS: ${{ vars.NUM_TESTS }}
         run: |
           chmod +x ./scripts/gather_statistics.sh
           ./scripts/gather_statistics.sh ./results

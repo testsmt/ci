@@ -21,7 +21,7 @@ for db in "$dir"/*.sqlite3; do
 
     for status in "unsat" "sat" "timeout" "rejected" "crash" "unsoundness" "unknown"; do
         count=$(sqlite3 "$db" "SELECT COUNT(*) FROM ExpResults WHERE result='$status';")
-        percentage=$(awk "BEGIN { printf \"%.2f\", ($count / ($unique_solver_configs * 1000000)) * 100 }")
+        percentage=$(awk "BEGIN { printf \"%.2f\", ($count / ($unique_solver_configs * $NUM_TESTS)) * 100 }")
         echo "Count of '$status': $count ($percentage%)"
     done
 
