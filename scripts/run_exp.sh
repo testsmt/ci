@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! "$#" -eq 5 ]; then
+if [ ! "$#" -eq 3 ]; then
     echo "Usage: $0 <theory> <num_tests> <solvers_cfg_path>"
     exit 2
 fi
