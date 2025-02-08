@@ -64,3 +64,24 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
           python -m z3.main
+
+      - name: Run experiment for each theory
+        env:
+          NUM_TESTS: ${{ vars.NUM_TESTS }}
+        run: |
+          chmod +x ./scripts/run_exp.sh
+          for theory in $(cat ./supported_theories/z3); do
+            ./scripts/run_exp.sh "$theory" "$NUM_TESTS" "./solvers.cfg"
+          done
+
+      - name: Store experiment results
+        run: |
+          chmod +x ./scripts/create_db.sh
+          for theory in $(cat ./supported_theories/z3); do
+            ./scripts/create_db.sh "$theory"
+          done
+
+      - name: Gather statistics
+        run: |
+          chmod +x ./scripts/gather_statistics.sh
+          ./scripts/gather_statistics.sh ./results
