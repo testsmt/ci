@@ -9,9 +9,12 @@ theory=$1
 num_tests=$2
 timeout=8.0
 memout=1048576
-solvers_cfg_path=$5
+solvers_cfg_path=$3  # Corrected from $5 to $3
 num_cores=4
 result_dir="./results"
 
-find $result_dir/$theory/temp -name "*.smt2" -print0 | \
-parallel -0 -j${num_cores} --eta --progress --bar ./oracle {} {}.time "$solvers_cfg_path" $result_dir/$theory/bugs $timeout $memout
+# Iterate over each .smt2 file in the specified directory
+find $result_dir/$theory/temp -name "*.smt2" -print0 | while IFS= read -r -d '' file; do
+    # Call the oracle script for each file
+    ./oracle "$file" "$file.time" "$solvers_cfg_path" "$result_dir/$theory/bugs" $timeout $memout
+done
