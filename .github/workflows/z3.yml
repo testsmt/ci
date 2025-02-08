@@ -1,12 +1,9 @@
 name: Test z3
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
 
 jobs:
   z3_workflow:
@@ -55,15 +52,24 @@ jobs:
           mkdir -p et_config
           cp ET_private/z_old/et/data/*.{cfg,g4} et_config/
 
-      - name: Install dependencies and run tests
-        env:
-          NUM_TESTS: ${{ vars.NUM_TESTS }}
+      - name: Check and update solver version
+        id: check_version
         run: |
           source venv/bin/activate
           pip install -r requirements.txt
           python -m z3.main
 
+      - name: Commit and push version changes
+        if: steps.check_version.outputs.version_changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add ./versions
+          git commit -m "Update solver version"
+          git push
+
       - name: Run experiment for each theory
+        if: steps.check_version.outputs.version_changed == 'true'
         env:
           NUM_TESTS: ${{ vars.NUM_TESTS }}
         run: |
@@ -76,6 +82,7 @@ jobs:
           done
 
       - name: Store experiment results
+        if: steps.check_version.outputs.version_changed == 'true'
         run: |
           chmod +x ./scripts/create_db.sh
           for theory in $(cat ./supported_theories/z3); do
@@ -83,6 +90,7 @@ jobs:
           done
 
       - name: Gather statistics
+        if: steps.check_version.outputs.version_changed == 'true'
         env:
           NUM_TESTS: ${{ vars.NUM_TESTS }}
         run: |
