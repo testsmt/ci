@@ -416,8 +416,6 @@ def test(fn, fpath_tmp, clis, tlimit_in_sec, mlimit_in_bytes, result_cache, is_r
         if stdout is None and stderr is None and exitcode is None and total_time is None:
             continue
 
-        print("stdout", stdout)
-        print("stderr", stderr)
         if not is_ref_run:
 
             fn_tmp.write(fpath_tmp.split(".")[0].split("/")[-1] + ",")

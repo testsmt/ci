@@ -23,7 +23,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install -y ghc cabal-install parallel sqlite3
+          sudo apt install -y ghc cabal-install sqlite3
 
       - name: Install Haskell dependencies
         run: |
@@ -54,8 +54,6 @@ jobs:
         run: |
           mkdir -p et_config
           cp ET_private/z_old/et/data/*.{cfg,g4} et_config/
-#          cp ET_private/z_old/bin/oracle ./oracle
-#          chmod +x ./oracle
 
       - name: Install dependencies and run tests
         env:
@@ -70,6 +68,9 @@ jobs:
           NUM_TESTS: ${{ vars.NUM_TESTS }}
         run: |
           chmod +x ./scripts/run_exp.sh
+          chmod +x ./binaries/cvc5-1.2.0
+          chmod +x ./binaries/z3-4.8.11
+          chmod +x ./binaries/z3-4.13.3
           for theory in $(cat ./supported_theories/z3); do
             ./scripts/run_exp.sh "$theory" "$NUM_TESTS" "./solvers.cfg"
           done
