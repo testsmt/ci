@@ -70,6 +70,9 @@ jobs:
           NUM_TESTS: ${{ vars.NUM_TESTS }}
         run: |
           chmod +x ./scripts/run_exp.sh
+          ls
+          ls ./results
+          ls ./results/temp-Core
           for theory in $(cat ./supported_theories/z3); do
             ./scripts/run_exp.sh "$theory" "$NUM_TESTS" "./solvers.cfg"
           done
