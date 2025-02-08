@@ -42,7 +42,8 @@ def main():
 
     if current_version == latest_version:
         print(f"{repo} is up to date with version {current_version}.")
-        print("::set-output name=version_changed::false")
+        with open(os.getenv('GITHUB_OUTPUT'), 'a') as github_output:
+            github_output.write('version_changed=false\n')
         return
 
     local_filename = matching_asset['name']
@@ -54,7 +55,8 @@ def main():
 
     write_version(repo, latest_version)
 
-    print("::set-output name=version_changed::true")
+    with open(os.getenv('GITHUB_OUTPUT'), 'a') as github_output:
+        github_output.write('version_changed=true\n')
 
     for theory in theories:
         prepare_directories(theory)
