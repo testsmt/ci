@@ -241,7 +241,7 @@ class Solver:
                 timeout=tlimit_in_sec,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                # shell=True,
+                shell=True,
             )
             total_time = time.time() - t1
 
