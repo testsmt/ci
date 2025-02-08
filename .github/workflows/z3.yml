@@ -73,12 +73,6 @@ jobs:
           for theory in $(cat ./supported_theories/z3); do
             ./scripts/run_exp.sh "$theory" "$NUM_TESTS" "./solvers.cfg"
           done
-          echo "test 1:"
-          ls ./results/Core/temp
-          echo "test 2:"
-          cat ./results/Core/temp/0.smt2
-          echo "test 3:"
-          cat ./results/Core/temp/0.smt2.time
 
       - name: Store experiment results
         run: |
