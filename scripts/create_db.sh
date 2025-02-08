@@ -18,7 +18,7 @@ sqlite3 $db "CREATE TABLE ExpResults(
 )"
 
 i=0
-for f in $(find $result_dir/temp-$1 -name "*.time"); do
+for f in $(find $result_dir/$1/temp -name "*.time"); do
     if ! ((i % 100)); then
         echo $i,$f
     fi

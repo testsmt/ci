@@ -13,5 +13,5 @@ solvers_cfg_path=$5
 num_cores=4
 result_dir="./results"
 
-find $result_dir/temp-$theory -name "*.smt2" -print0 | \
-parallel -0 -j${num_cores} --eta --progress --bar ./oracle {} {}.time "$solvers_cfg_path" $result_dir/bugs-$theory $timeout $memout
+find $result_dir/$theory/temp -name "*.smt2" -print0 | \
+parallel -0 -j${num_cores} --eta --progress --bar ./oracle {} {}.time "$solvers_cfg_path" $result_dir/$theory/bugs $timeout $memout
