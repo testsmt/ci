@@ -17,5 +17,4 @@ result_dir="./results"
 find $result_dir/$theory/temp -name "*.smt2" -print0 | while IFS= read -r -d '' file; do
     echo "Processing file: $file"
     python ./scripts/oracle.py "$file" "$file.time" "$solvers_cfg_path" "$result_dir/$theory/bugs" $timeout $memout
-    sleep 0.1
 done
