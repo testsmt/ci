@@ -45,7 +45,7 @@ def extract_tar_bz2(file_path, extract_to='.', rename_to=None):
     if rename_to and extracted_folder:
         new_folder_path = os.path.join(extract_to, rename_to)
 
-        if os.path.exists(new_folder_path):
+        if os.path.exists(new_folder_path) and os.path.isdir(new_folder_path):
             shutil.rmtree(new_folder_path)
 
         shutil.move(extracted_folder, new_folder_path)
