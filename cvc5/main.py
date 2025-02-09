@@ -18,10 +18,10 @@ theories = [
 ]
 
 def main():
-    owner = 'Z3Prover'
-    repo = 'z3'
-    pattern = re.compile(r'z3-\d+\.\d+\.\d+-x64-glibc-\d+\.\d+\.zip')
-    path_to_solver_binary = "./solver/bin/z3"
+    owner = 'cvc5'
+    repo = 'cvc5'
+    pattern = re.compile(r'cvc5-Linux-x86_64-static\.zip')
+    path_to_solver_binary = "./solver/bin/cvc5"
     NUM_TESTS = int(os.getenv("NUM_TESTS", 100))
     latest_release = get_latest_release(owner, repo)
 
@@ -49,7 +49,7 @@ def main():
     extract_file(local_filename, extract_to='./', rename_to="solver")
     os.chmod(path_to_solver_binary, 0o755)
 
-    write_to_file("./solvers.cfg", "./solver/bin/z3")
+    write_to_file("./solvers.cfg", "./solver/bin/cvc5")
 
     write_version(repo, latest_version)
 
