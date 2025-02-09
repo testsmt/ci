@@ -33,25 +33,16 @@ def extract_tar_bz2(file_path, extract_to='.', rename_to=None):
     with tarfile.open(file_path, 'r:bz2') as tar_ref:
         tar_ref.extractall(extract_to)
 
-    extracted_items = os.listdir(extract_to)
+        extracted_files = tar_ref.getnames()
+        if len(extracted_files) != 1:
+            raise ValueError("Expected exactly one file in the archive")
 
-    extracted_folder = None
-    for item in extracted_items:
-        item_path = os.path.join(extract_to, item)
-        if os.path.isdir(item_path) and item != rename_to:
-            extracted_folder = item_path
-            break
+        extracted_file_path = os.path.join(extract_to, extracted_files[0])
 
-    if rename_to and extracted_folder:
-        new_folder_path = os.path.join(extract_to, rename_to)
-
-        if os.path.exists(new_folder_path) and os.path.isdir(new_folder_path):
-            shutil.rmtree(new_folder_path)
-
-        shutil.move(extracted_folder, new_folder_path)
-        print(f"Renamed extracted folder to: {new_folder_path}")
-    elif rename_to and not extracted_folder:
-        print("Warning: No extracted folder found to rename.")
+        if rename_to:
+            new_file_path = os.path.join(extract_to, rename_to)
+            os.rename(extracted_file_path, new_file_path)
+            print(f"Renamed file to: {new_file_path}")
 
 def extract_file(file_path, extract_to='.', rename_to=None):
     if file_path.endswith('.zip'):

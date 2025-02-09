@@ -42,7 +42,7 @@ def main():
 
     local_filename = matching_asset['name']
     download_file(matching_asset['browser_download_url'], local_filename)
-    extract_file(local_filename, extract_to='./', rename_to="opensmt")
+    extract_file(local_filename, extract_to='./')
     os.chmod(path_to_solver_binary, 0o755)
 
     write_to_file("./solvers.cfg", "./opensmt")
