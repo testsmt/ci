@@ -17,7 +17,7 @@ def main():
     repo = 'opensmt'
     solver_name = "opensmt2"
     pattern = re.compile(r'opensmt-x64-linux\.tar\.bz2')
-    path_to_solver_binary = "./solver/opensmt"
+    path_to_solver_binary = "./opensmt"
     NUM_TESTS = int(os.getenv("NUM_TESTS", 100))
     latest_release = get_latest_release(owner, repo)
 
@@ -42,10 +42,10 @@ def main():
 
     local_filename = matching_asset['name']
     download_file(matching_asset['browser_download_url'], local_filename)
-    extract_file(local_filename, extract_to='./', rename_to="solver")
+    extract_file(local_filename, extract_to='./', rename_to="opensmt")
     os.chmod(path_to_solver_binary, 0o755)
 
-    write_to_file("./solvers.cfg", "./solver/opensmt")
+    write_to_file("./solvers.cfg", "./opensmt")
 
     write_version(solver_name, latest_version)
 
