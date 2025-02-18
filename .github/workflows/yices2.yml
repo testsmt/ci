@@ -1,0 +1,103 @@
+name: Test yices2
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  z3_workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y ghc cabal-install sqlite3
+
+      - name: Install Haskell dependencies
+        run: |
+          cabal update
+          cabal install --lib testing-feat
+          cabal install --lib size-based
+
+      - name: Clone ET_private
+        run: |
+          git clone --branch smt-solver-evolution https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/wintered/ET_private.git
+        env:
+          GIT_USER: ${{ secrets.PAT_TOKEN }}
+
+      - name: Set up Python environment
+        run: |
+          python3 -m venv ./venv
+          source ./venv/bin/activate
+          pip install poetry
+
+      - name: Install dependencies using Poetry inside ET_private
+        run: |
+          cd ET_private
+          source ../venv/bin/activate
+          poetry install
+          cd ..
+
+      - name: Copy necessary files
+        run: |
+          mkdir -p et_config
+          cp ET_private/z_old/et/data/*.{cfg,g4} et_config/
+
+      - name: Check and update solver version
+        id: check_version
+        run: |
+          source venv/bin/activate
+          pip install -r requirements.txt
+          python -m yices2.main
+
+      - name: Commit and push version changes
+        if: steps.check_version.outputs.version_changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add ./versions
+          git commit -m "Update solver version"
+          git push
+
+      - name: Run experiment for each theory
+        if: steps.check_version.outputs.version_changed == 'true'
+        env:
+          NUM_TESTS: ${{ vars.NUM_TESTS }}
+        run: |
+          chmod +x ./scripts/run_exp.sh
+          chmod +x ./binaries/cvc5-1.2.0
+          chmod +x ./binaries/z3-4.8.11
+          chmod +x ./binaries/z3-4.13.3
+          for theory in $(cat ./supported_theories/yices2); do
+            ./scripts/run_exp.sh "$theory" "$NUM_TESTS" "./solvers.cfg"
+          done
+
+      - name: Store experiment results
+        if: steps.check_version.outputs.version_changed == 'true'
+        run: |
+          chmod +x ./scripts/create_db.sh
+          for theory in $(cat ./supported_theories/yices2); do
+            ./scripts/create_db.sh "$theory"
+          done
+
+      - name: Gather statistics
+        if: steps.check_version.outputs.version_changed == 'true'
+        env:
+          NUM_TESTS: ${{ vars.NUM_TESTS }}
+        run: |
+          chmod +x ./scripts/gather_statistics.sh
+          ./scripts/gather_statistics.sh ./results
