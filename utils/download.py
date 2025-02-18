@@ -20,13 +20,28 @@ def extract_zip(file_path, extract_to='.', rename_to=None):
         new_folder_path = os.path.join(extract_to, rename_to)
         shutil.move(extracted_folder, new_folder_path)
 
-def extract_tar_gz(file_path, extract_to='.', rename_to=None):
+
+def extract_tar_gz(file_path, extract_to='.', rename_to=None, folder_prefix=None):
     with tarfile.open(file_path, 'r:gz') as tar_ref:
         tar_ref.extractall(extract_to)
-    if rename_to:
-        extracted_folder = os.path.join(extract_to, os.path.splitext(os.path.basename(file_path))[0])
-        new_folder_path = os.path.join(extract_to, rename_to)
-        shutil.move(extracted_folder, new_folder_path)
+
+    if rename_to and folder_prefix:
+        extracted_contents = os.listdir(extract_to)
+
+        extracted_folders = [
+            f for f in extracted_contents
+            if os.path.isdir(os.path.join(extract_to, f)) and f.startswith(folder_prefix)
+        ]
+
+        if len(extracted_folders) == 1:
+            extracted_folder = extracted_folders[0]
+            extracted_folder_path = os.path.join(extract_to, extracted_folder)
+            new_folder_path = os.path.join(extract_to, rename_to)
+
+            shutil.move(extracted_folder_path, new_folder_path)
+            print(f"Renamed folder {extracted_folder} to {rename_to}.")
+        else:
+            print("No matching directory found or multiple directories match the prefix.")
 
 
 def extract_tar_bz2(file_path, extract_to='.', rename_to=None):
@@ -44,13 +59,13 @@ def extract_tar_bz2(file_path, extract_to='.', rename_to=None):
             os.rename(extracted_file_path, new_file_path)
             print(f"Renamed file to: {new_file_path}")
 
-def extract_file(file_path, extract_to='.', rename_to=None):
+def extract_file(file_path, extract_to='.', rename_to=None, folder_prefix=None):
     if file_path.endswith('.zip'):
         print(f"Extracting ZIP file: {file_path}")
         extract_zip(file_path, extract_to, rename_to)
     elif file_path.endswith('.tar.gz'):
         print(f"Extracting TAR.GZ file: {file_path}")
-        extract_tar_gz(file_path, extract_to, rename_to)
+        extract_tar_gz(file_path, extract_to, rename_to, folder_prefix)
     elif file_path.endswith('.tar.bz2'):
         print(f"Extracting TAR.BZ2 file: {file_path}")
         extract_tar_bz2(file_path, extract_to, rename_to)
