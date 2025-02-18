@@ -23,10 +23,17 @@ def extract_zip(file_path, extract_to='.', rename_to=None):
 def extract_tar_gz(file_path, extract_to='.', rename_to=None):
     with tarfile.open(file_path, 'r:gz') as tar_ref:
         tar_ref.extractall(extract_to)
+
     if rename_to:
-        extracted_folder = os.path.join(extract_to, os.path.splitext(os.path.basename(file_path))[0])
+        extracted_folder = os.path.join(extract_to, os.path.splitext(os.path.splitext(os.path.basename(file_path))[0])[0])
         new_folder_path = os.path.join(extract_to, rename_to)
-        shutil.move(extracted_folder, new_folder_path)
+
+        if os.path.exists(extracted_folder):
+            shutil.move(extracted_folder, new_folder_path)
+        else:
+            print(f"Warning: Expected extracted folder '{extracted_folder}' not found.")
+
+    os.remove(file_path)
 
 
 def extract_tar_bz2(file_path, extract_to='.', rename_to=None):

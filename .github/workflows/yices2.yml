@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  z3_workflow:
+  yices2_workflow:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
