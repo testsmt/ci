@@ -21,32 +21,13 @@ def extract_zip(file_path, extract_to='.', rename_to=None):
         shutil.move(extracted_folder, new_folder_path)
 
 def extract_tar_gz(file_path, extract_to='.', rename_to=None):
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"Error: The file {file_path} does not exist.")
-
-    print(f"Extracting TAR.GZ file: {file_path}")
-
     with tarfile.open(file_path, 'r:gz') as tar_ref:
         tar_ref.extractall(extract_to)
-
-    extracted_items = os.listdir(extract_to)
-    extracted_folder = None
-
-    for item in extracted_items:
-        item_path = os.path.join(extract_to, item)
-        if os.path.isdir(item_path):
-            extracted_folder = item_path
-            break
-
-    if rename_to and extracted_folder:
+    if rename_to:
+        extracted_folder = os.path.join(extract_to, os.path.splitext(os.path.basename(file_path))[0])
         new_folder_path = os.path.join(extract_to, rename_to)
         shutil.move(extracted_folder, new_folder_path)
-        print(f"Renamed {extracted_folder} -> {new_folder_path}")
-    else:
-        print("Warning: No extracted folder found to rename.")
 
-    os.remove(file_path)
-    print(f"Removed archive file: {file_path}")
 
 def extract_tar_bz2(file_path, extract_to='.', rename_to=None):
     with tarfile.open(file_path, 'r:bz2') as tar_ref:
