@@ -19,7 +19,7 @@ def main():
     owner = 'SRI-CSL'
     repo = 'yices2'
     pattern = re.compile(r'yices-\d+\.\d+\.\d+-x86_64-pc-linux-gnu(-static-gmp)?\.tar\.gz')
-    path_to_solver_binary = "./solver/bin/yices"
+    path_to_solver_binary = "./solver/bin/yices-smt2"
     NUM_TESTS = int(os.getenv("NUM_TESTS", 100))
     latest_release = get_latest_release(owner, repo)
 
@@ -47,7 +47,7 @@ def main():
     extract_file(local_filename, extract_to='./', rename_to="solver", folder_prefix="yices-")
     os.chmod(path_to_solver_binary, 0o755)
 
-    write_to_file("./solvers.cfg", "./solver/bin/yices")
+    write_to_file("./solvers.cfg", "./solver/bin/yices-smt2")
 
     write_version(repo, latest_version)
 
