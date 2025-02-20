@@ -59,7 +59,7 @@ def main():
 
         local_filename = f"mathsat-{latest_version}-linux-x86_64.tar.gz"
         download_file(download_url, local_filename)
-        extract_file(local_filename, extract_to='./', rename_to="solver")
+        extract_file(local_filename, extract_to='./', rename_to="solver", folder_prefix="mathsat-")
         os.chmod(path_to_solver_binary, 0o755)
 
         write_to_file("./solvers.cfg", "./solver/bin/mathsat")
