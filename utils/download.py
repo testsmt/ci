@@ -74,5 +74,6 @@ def extract_file(file_path, extract_to='.', rename_to=None, folder_prefix=None):
     else:
         raise ValueError(f"Unsupported file type for {file_path}")
 
-    os.remove(file_path)
-    print(f"Removed archive file: {file_path}")
+    if '.' in os.path.basename(file_path):
+        os.remove(file_path)
+        print(f"Removed archive file: {file_path}")
