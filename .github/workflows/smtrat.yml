@@ -62,7 +62,7 @@ jobs:
         run: |
           source venv/bin/activate
           pip install -r requirements.txt
-          python -m smtrat.main
+          python -m smt-rat.main
 
       - name: Commit and push version changes
         if: steps.check_version.outputs.version_changed == 'true'
