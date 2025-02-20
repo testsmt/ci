@@ -63,7 +63,7 @@ def extract_file(file_path, extract_to='.', rename_to=None, folder_prefix=None):
     if file_path.endswith('.zip'):
         print(f"Extracting ZIP file: {file_path}")
         extract_zip(file_path, extract_to, rename_to)
-    elif file_path.endswith('.tar.gz'):
+    elif file_path.endswith('.tar.gz') or file_path.endswith('.tgz'):
         print(f"Extracting TAR.GZ file: {file_path}")
         extract_tar_gz(file_path, extract_to, rename_to, folder_prefix)
     elif file_path.endswith('.tar.bz2'):
