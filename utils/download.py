@@ -69,6 +69,8 @@ def extract_file(file_path, extract_to='.', rename_to=None, folder_prefix=None):
     elif file_path.endswith('.tar.bz2'):
         print(f"Extracting TAR.BZ2 file: {file_path}")
         extract_tar_bz2(file_path, extract_to, rename_to)
+    elif '.' not in os.path.basename(file_path):
+        print(f"File without extension: {file_path}")
     else:
         raise ValueError(f"Unsupported file type for {file_path}")
 
