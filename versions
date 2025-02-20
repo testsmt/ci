@@ -4,4 +4,4 @@ opensmt2: v2.8.0
 yices2: Yices-2.6.5
 smtrat: 24.06
 stp: 2.3.4_cadical
-ostrich: v1.4smtcomp
+ostrich: test
