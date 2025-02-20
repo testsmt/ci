@@ -3,4 +3,4 @@ cvc5: cvc5-1.2.1
 opensmt2: v2.8.0
 yices2: Yices-2.6.5
 smtrat: 24.06
-stp: test
+stp: 2.3.4_cadical
