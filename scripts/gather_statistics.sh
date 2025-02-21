@@ -1,12 +1,14 @@
 #! /bin/bash
 
 # Check if the correct number of arguments are provided
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <directory>"
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <directory> <output_file>"
     exit 1
 fi
 
 dir="$1"
+output_file="$2"
+unsoundness_found=false
 
 # Loop through each .sqlite3 file in the directory
 for db in "$dir"/*.sqlite3; do
@@ -23,6 +25,13 @@ for db in "$dir"/*.sqlite3; do
         count=$(sqlite3 "$db" "SELECT COUNT(*) FROM ExpResults WHERE result='$status';")
         percentage=$(awk "BEGIN { printf \"%.2f\", ($count / ($unique_solver_configs * $NUM_TESTS)) * 100 }")
         echo "Count of '$status': $count ($percentage%)"
+
+        if [ "$status" == "unsoundness" ] && [ "$count" -gt 0 ]; then
+            unsoundness_found=true
+            sqlite3 "$db" "SELECT formula_idx FROM ExpResults WHERE result='unsoundness';" | while read -r formula_idx; do
+                echo "$formula_idx, $(date '+%Y-%m-%d %H:%M:%S')" >> "$output_file"
+            done
+        fi
     done
 
     echo "Unique Solver Configurations: $unique_solver_configs"
@@ -30,3 +39,7 @@ for db in "$dir"/*.sqlite3; do
 done
 
 echo "Statistics collection complete."
+
+if [ "$unsoundness_found" = true ]; then
+    exit 99
+fi
