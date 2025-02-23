@@ -23,6 +23,14 @@ for f in $(find $result_dir/$1/temp -name "*.time"); do
         echo $i,$f
     fi
     tail -n +4 "$f" > "$f.tmp"
-    sqlite3 $db -echo -cmd ".mode csv" ".import $f.tmp ExpResults"
+    import_output=$(sqlite3 $db -echo -cmd ".mode csv" ".import $f.tmp ExpResults" 2>&1)
+
+    if [[ $import_output == *"INSERT failed"* ]]; then
+        echo "Error during import of $f.tmp:"
+        echo "$import_output"
+        echo "Contents of the file:"
+        cat "$f.tmp"
+    fi
+
     i=$((i+1))
 done
