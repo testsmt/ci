@@ -27,3 +27,38 @@ def get_latest_release(owner, repo):
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
+
+def get_latest_pre_release_assets(owner, repo):
+    try:
+        g = Github()
+        repository = g.get_repo(f"{owner}/{repo}")
+        releases = repository.get_releases()
+
+        pre_releases = sorted(
+            (release for release in releases if release.prerelease),
+            key=lambda r: r.published_at,
+            reverse=True
+        )
+
+        if not pre_releases:
+            print("No pre-releases found.")
+            return None
+
+        latest_pre_release = pre_releases[0]
+        assets = latest_pre_release.get_assets()
+
+        asset_info = [
+            {
+                "name": asset.name,
+                "size": asset.size,
+                "download_count": asset.download_count,
+                "browser_download_url": asset.browser_download_url,
+                "created_at": asset.created_at
+            }
+            for asset in assets
+        ]
+
+        return asset_info
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
