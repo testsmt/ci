@@ -3,6 +3,6 @@ cvc5: test
 opensmt2: v2.8.0
 yices2: Yices-2.6.5
 smtrat: test
-stp: test
+stp: 2.3.4_cadical
 ostrich: v1.4smtcomp
 mathsat5: 5.6.11
