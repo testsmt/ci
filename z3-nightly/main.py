@@ -35,10 +35,10 @@ def main():
         print(f"Build directory already exists at {build_dir}.")
 
     print(f"Running 'cmake ..' in {build_dir}...")
-    execute_command("cmake", [".."], cwd=build_dir)
+    execute_command("cmake", [".."], cwd=build_dir, capture_output=False)
 
     print(f"Building inside {build_dir} with 'make'...")
-    execute_command("make", cwd=build_dir)
+    execute_command("make", cwd=build_dir, capture_output=False)
 
     os.chmod(solver_binary_path, 0o755)
 
