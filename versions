@@ -5,4 +5,4 @@ yices2: test
 smtrat: test
 stp: test
 ostrich: test
-mathsat5: test
+mathsat5: 5.6.11
