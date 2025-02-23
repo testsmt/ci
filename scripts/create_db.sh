@@ -23,13 +23,15 @@ for f in $(find $result_dir/$1/temp -name "*.time"); do
         echo $i,$f
     fi
     tail -n +4 "$f" > "$f.tmp"
-    import_output=$(sqlite3 $db -echo -cmd ".mode csv" ".import $f.tmp ExpResults" 2>&1)
+    formula_idx=$(basename "$f" | cut -d'.' -f1)
+    awk -v idx="$formula_idx" -F, 'BEGIN { OFS = "," } { if ($1 == "") $1 = idx; print }' "$f.tmp" > "$f.tmp.preprocessed"
+    import_output=$(sqlite3 $db -echo -cmd ".mode csv" ".import $f.tmp.preprocessed ExpResults" 2>&1)
 
     if [[ $import_output == *"INSERT failed"* ]]; then
-        echo "Error during import of $f.tmp:"
+        echo "Error during import of $f.tmp.preprocessed:"
         echo "$import_output"
         echo "Contents of the file:"
-        cat "$f.tmp"
+        cat "$f.tmp.preprocessed"
     fi
 
     i=$((i+1))
