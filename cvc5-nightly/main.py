@@ -23,7 +23,12 @@ def main():
     pattern = re.compile(r'cvc5-Linux-x86_64-static-\d{4}-\d{2}-\d{2}-[a-f0-9]+\.zip')
     path_to_solver_binary = "./solver/bin/cvc5"
     NUM_TESTS = int(os.getenv("NUM_TESTS", 100))
+
     latest_pre_release = get_latest_pre_release_assets(owner, repo)
+
+    if not latest_pre_release:
+        print("No pre-release information found.")
+        return
 
     matching_asset = None
     for asset in latest_pre_release['assets']:
