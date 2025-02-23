@@ -45,7 +45,7 @@ def main():
     extract_file(local_filename, extract_to='./', rename_to="solver", folder_prefix="cvc5-Linux-")
     os.chmod(path_to_solver_binary, 0o755)
 
-    write_to_file("./solvers.cfg", "./solver/bin/cvc5")
+    write_to_file("./solvers.cfg", "./solver/bin/cvc5 -q")
 
     for theory in theories:
         prepare_directories(theory)
