@@ -12,13 +12,33 @@ def download_file(url, local_filename):
                 f.write(chunk)
     return local_filename
 
-def extract_zip(file_path, extract_to='.', rename_to=None):
+
+def extract_zip(file_path, extract_to='.', rename_to=None, folder_prefix=None):
     with zipfile.ZipFile(file_path, 'r') as zip_ref:
         zip_ref.extractall(extract_to)
+
     if rename_to:
-        extracted_folder = os.path.join(extract_to, os.path.splitext(os.path.basename(file_path))[0])
-        new_folder_path = os.path.join(extract_to, rename_to)
-        shutil.move(extracted_folder, new_folder_path)
+        extracted_contents = os.listdir(extract_to)
+
+        extracted_folder = None
+        if folder_prefix:
+            for item in extracted_contents:
+                item_path = os.path.join(extract_to, item)
+                if os.path.isdir(item_path) and item.startswith(folder_prefix):
+                    extracted_folder = item_path
+                    break
+        else:
+            extracted_folder = os.path.join(extract_to, os.path.splitext(os.path.basename(file_path))[0])
+
+        if extracted_folder and os.path.exists(extracted_folder):
+            new_folder_path = os.path.join(extract_to, rename_to)
+            try:
+                shutil.move(extracted_folder, new_folder_path)
+                print(f"Renamed {extracted_folder} to {new_folder_path}")
+            except Exception as e:
+                print(f"Error moving directory: {e}")
+        else:
+            print("No matching directory found to rename.")
 
 
 def extract_tar_gz(file_path, extract_to='.', rename_to=None, folder_prefix=None):
@@ -62,7 +82,7 @@ def extract_tar_bz2(file_path, extract_to='.', rename_to=None):
 def extract_file(file_path, extract_to='.', rename_to=None, folder_prefix=None):
     if file_path.endswith('.zip'):
         print(f"Extracting ZIP file: {file_path}")
-        extract_zip(file_path, extract_to, rename_to)
+        extract_zip(file_path, extract_to, rename_to, folder_prefix)
     elif file_path.endswith('.tar.gz') or file_path.endswith('.tgz'):
         print(f"Extracting TAR.GZ file: {file_path}")
         extract_tar_gz(file_path, extract_to, rename_to, folder_prefix)
