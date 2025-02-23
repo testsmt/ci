@@ -9,6 +9,7 @@ fi
 dir="$1"
 output_file="$2"
 unsoundness_found=false
+export UNSOUNDNESS_FOUND=false
 
 # Loop through each .sqlite3 file in the directory
 for db in "$dir"/*.sqlite3; do
@@ -27,7 +28,7 @@ for db in "$dir"/*.sqlite3; do
         echo "Count of '$status': $count ($percentage%)"
 
         if [ "$status" == "unsoundness" ] && [ "$count" -gt 0 ]; then
-            unsoundness_found=true
+            UNSOUNDNESS_FOUND=true
             sqlite3 "$db" "SELECT formula_idx FROM ExpResults WHERE result='unsoundness';" | while read -r formula_idx; do
                 echo "$formula_idx, $(date '+%Y-%m-%d %H:%M:%S')" >> "$output_file"
             done
@@ -38,8 +39,5 @@ for db in "$dir"/*.sqlite3; do
     echo "---------------------------------------------"
 done
 
+echo "UNSOUNDNESS_FOUND=$UNSOUNDNESS_FOUND" >> $GITHUB_ENV
 echo "Statistics collection complete."
-
-if [ "$unsoundness_found" = true ]; then
-    exit 99
-fi
