@@ -42,7 +42,7 @@ def main():
     extract_file(local_filename, extract_to='./')
     os.chmod(path_to_solver_binary, 0o755)
 
-    write_to_file("./solvers.cfg", "./ostrich")
+    write_to_file("./solvers.cfg", "./ostrich +quiet -logo")
 
     write_version(repo, latest_version)
 
