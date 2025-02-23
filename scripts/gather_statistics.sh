@@ -15,6 +15,9 @@ export UNSOUNDNESS_FOUND=false
 for db in "$dir"/*.sqlite3; do
     echo "Processing database: $db"
 
+    filename=$(basename -- "$db")
+    file_identifier="${filename%.sqlite3}"
+
     # Get the unique solver configurations
     unique_solver_configs=$(sqlite3 "$db" "SELECT COUNT(DISTINCT solver_cfg) FROM ExpResults;")
 
@@ -30,7 +33,7 @@ for db in "$dir"/*.sqlite3; do
         if [ "$status" == "unsoundness" ] && [ "$count" -gt 0 ]; then
             UNSOUNDNESS_FOUND=true
             sqlite3 "$db" "SELECT formula_idx FROM ExpResults WHERE result='unsoundness';" | while read -r formula_idx; do
-                echo "$formula_idx, $(date '+%Y-%m-%d %H:%M:%S')" >> "$output_file"
+                echo "$formula_idx, $file_identifier, $(date '+%Y-%m-%d %H:%M:%S')" >> "$output_file"
             done
         fi
     done
