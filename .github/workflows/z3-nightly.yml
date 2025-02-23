@@ -1,0 +1,105 @@
+name: Test z3 nightly build
+
+on:
+  schedule:
+    - cron: '0 5 * * 5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  z3_workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y ghc cabal-install sqlite3
+
+      - name: Install Haskell dependencies
+        run: |
+          cabal update
+          cabal install --lib testing-feat
+          cabal install --lib size-based
+
+      - name: Clone ET_private
+        run: |
+          git clone --branch smt-solver-evolution https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/wintered/ET_private.git
+        env:
+          GIT_USER: ${{ secrets.PAT_TOKEN }}
+
+      - name: Set up Python environment
+        run: |
+          python3 -m venv ./venv
+          source ./venv/bin/activate
+          pip install poetry
+
+      - name: Install dependencies using Poetry inside ET_private
+        run: |
+          cd ET_private
+          source ../venv/bin/activate
+          poetry install
+          cd ..
+
+      - name: Check and update solver version
+        run: |
+          source venv/bin/activate
+          pip install -r requirements.txt
+          python -m z3-nightly.main
+
+      - name: Set up Git user
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+
+      - name: Pull latest changes
+        run: |
+          git pull origin main
+
+      - name: Run experiment for each theory
+        env:
+          NUM_TESTS: ${{ vars.NUM_TESTS }}
+        run: |
+          chmod +x ./scripts/run_exp.sh
+          chmod +x ./binaries/cvc5-1.2.0
+          chmod +x ./binaries/z3-4.8.11
+          chmod +x ./binaries/z3-4.13.3
+          for theory in $(cat ./supported_theories/z3); do
+            ./scripts/run_exp.sh "$theory" "$NUM_TESTS" "./solvers.cfg"
+          done
+
+      - name: Store experiment results
+        run: |
+          chmod +x ./scripts/create_db.sh
+          for theory in $(cat ./supported_theories/z3); do
+            ./scripts/create_db.sh "$theory"
+          done
+
+      - name: Gather statistics
+        env:
+          NUM_TESTS: ${{ vars.NUM_TESTS }}
+        run: |
+          chmod +x ./scripts/gather_statistics.sh
+          ./scripts/gather_statistics.sh ./results ./found_bugs/z3_bugs
+
+      - name: Commit unsoundness bugs
+        if: env.UNSOUNDNESS_FOUND == 'true'
+        run: |
+            git add ./found_bugs/z3_bugs
+            git commit -m "Add unsoundness bugs"
+            git push
+
+      - name: Fail the action if unsoundness is found
+        if: env.UNSOUNDNESS_FOUND == 'true'
+        run: exit 1
