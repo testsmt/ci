@@ -1,7 +1,7 @@
 z3: z3-4.14.0
 cvc5: test
 opensmt2: v2.8.0
-yices2: test
+yices2: Yices-2.6.5
 smtrat: test
 stp: test
 ostrich: test
