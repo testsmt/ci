@@ -1,5 +1,5 @@
 z3: test
-cvc5: test
+cvc5: cvc5-1.2.1
 opensmt2: test
 yices2: test
 smtrat: test
