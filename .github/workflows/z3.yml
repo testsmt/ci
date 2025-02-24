@@ -33,7 +33,7 @@ jobs:
           cabal install --lib testing-feat
           cabal install --lib size-based
 
-      - name: Clone ET_private
+      - name: Clone ET
         run: |
           git clone --branch dev https://github.com/wintered/ET.git
 
@@ -43,7 +43,7 @@ jobs:
           source ./venv/bin/activate
           pip install poetry
 
-      - name: Install dependencies using Poetry inside ET_private
+      - name: Install dependencies using Poetry inside ET
         run: |
           cd ET
           source ../venv/bin/activate

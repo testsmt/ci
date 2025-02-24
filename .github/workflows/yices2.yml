@@ -33,11 +33,9 @@ jobs:
           cabal install --lib testing-feat
           cabal install --lib size-based
 
-      - name: Clone ET_private
+      - name: Clone ET
         run: |
-          git clone --branch smt-solver-evolution https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/wintered/ET_private.git
-        env:
-          GIT_USER: ${{ secrets.PAT_TOKEN }}
+          git clone --branch dev https://github.com/wintered/ET.git
 
       - name: Set up Python environment
         run: |
@@ -45,9 +43,9 @@ jobs:
           source ./venv/bin/activate
           pip install poetry
 
-      - name: Install dependencies using Poetry inside ET_private
+      - name: Install dependencies using Poetry inside ET
         run: |
-          cd ET_private
+          cd ET
           source ../venv/bin/activate
           poetry install
           cd ..
