@@ -35,9 +35,7 @@ jobs:
 
       - name: Clone ET_private
         run: |
-          git clone --branch smt-solver-evolution https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/wintered/ET_private.git
-        env:
-          GIT_USER: ${{ secrets.PAT_TOKEN }}
+          git clone git@github.com:wintered/ET.git
 
       - name: Set up Python environment
         run: |
