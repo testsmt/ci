@@ -35,7 +35,7 @@ jobs:
 
       - name: Clone ET_private
         run: |
-          git clone --branch dev git@github.com:wintered/ET.git
+          git clone --branch dev https://github.com/wintered/ET.git
 
       - name: Set up Python environment
         run: |
