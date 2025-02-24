@@ -1,4 +1,4 @@
-z3: test
+z3: z3-4.14.0
 cvc5: cvc5-1.2.1
 opensmt2: v2.8.0
 yices2: Yices-2.6.5
