@@ -45,7 +45,7 @@ jobs:
 
       - name: Install dependencies using Poetry inside ET_private
         run: |
-          cd ET_private
+          cd ET
           source ../venv/bin/activate
           poetry install
           cd ..
