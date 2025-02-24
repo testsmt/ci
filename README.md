@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is designed to automate the process of analyzing nightly builds of various SMT solvers for potential bugs. By leveraging GitHub Actions, this project ensures that the solvers are regularly checked and any issues are promptly identified. This initiative was developed by Andrei Zhukov and Dominik Winterer as part of a semester project at the AST Lab, ETH Zurich.
+This project is designed to automate the process of analyzing latest releases and nightly builds of various SMT solvers for potential bugs. By leveraging GitHub Actions, this project ensures that the solvers are regularly checked and any issues are promptly identified. This initiative was developed by Andrei Zhukov and Dominik Winterer as part of a semester project at the AST Lab, ETH Zurich.
 
 ## Solvers Monitored
 
@@ -29,10 +29,6 @@ The project focuses on the following SMT solvers:
 2. **Stable Release Checks**: For each solver listed under stable releases, the latest stable version is fetched and analyzed for bugs.
 
 3. **Nightly Build Checks**: Nightly builds of Z3 and CVC5 are also fetched and scrutinized to catch any issues that might arise in the latest development versions.
-
-4. **Bug Analysis**: The project includes scripts and tools that automatically run tests and analyses on the solvers, identifying any potential bugs or issues.
-
-5. **Reporting**: Results from each run are documented and, if any issues are found, they are reported for further investigation and resolution.
 
 ## License
 
