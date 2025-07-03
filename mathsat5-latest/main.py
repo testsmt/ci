@@ -51,12 +51,6 @@ def main():
     if success:
         current_version = read_version(repo)
 
-        if current_version == latest_version:
-            print(f"{repo} is up to date with version {current_version}.")
-            with open(os.getenv('GITHUB_OUTPUT'), 'a') as github_output:
-                github_output.write('version_changed=false\n')
-            return
-
         local_filename = f"mathsat-{latest_version}-linux-x86_64.tar.gz"
         download_file(download_url, local_filename)
         extract_file(local_filename, extract_to='./', rename_to="solver", folder_prefix="mathsat-")
