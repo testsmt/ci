@@ -62,7 +62,7 @@ def main():
         extract_file(local_filename, extract_to='./', rename_to="solver", folder_prefix="mathsat-")
         os.chmod(path_to_solver_binary, 0o755)
 
-        write_to_file("./solvers.cfg", "./solver/bin/mathsat")
+        write_to_file("./solvers.cfg", "./solver/bin/mathsat -theory.bv.div_by_zero_mode=1 -theory.fp.minmax_zero_mode=4 -theory.fp.to_bv_overflow_mode=1 -theory.na.div_by_zero_mode=1")
 
         write_version(repo, latest_version)
 
