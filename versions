@@ -1,7 +1,7 @@
 z3: z3-4.15.2
 cvc5: cvc5-1.3.0
 opensmt2: v2.9.2
-yices2: Yices-2.6.5
+yices2: yices-2.7.0
 smtrat: 24.06
 stp: 2.3.4_cadical
 ostrich: v1.4smtcomp
