@@ -55,7 +55,7 @@ jobs:
         if: steps.check_version.outputs.version_changed == 'true'
         run: |
           git add ./versions
-          git commit -m "Update solver version"
+          git commit -m "Update solver version" --only ./versions
           git push
 
       - name: Run experiment for each theory
