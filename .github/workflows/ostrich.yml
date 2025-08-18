@@ -51,6 +51,11 @@ jobs:
           pip install -r requirements.txt
           python -m ostrich-latest.main
 
+      - name: Create solver-specific config
+        if: steps.check_version.outputs.version_changed == 'true'
+        run: |
+          cp ./solvers.cfg ./solvers-ostrich.cfg
+
       - name: Commit and push version changes
         if: steps.check_version.outputs.version_changed == 'true'
         run: |
@@ -66,7 +71,7 @@ jobs:
           chmod +x ./binaries/z3-4.8.11
           chmod +x ./binaries/z3-4.13.3
           for theory in $(cat ./supported_theories/ostrich); do
-            ./scripts/run_exp.sh "$theory" "$NUM_TESTS" "./solvers.cfg"
+            ./scripts/run_exp.sh "$theory" "$NUM_TESTS" "./solvers-ostrich.cfg"
           done
 
       - name: Store experiment results

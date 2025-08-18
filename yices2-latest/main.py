@@ -42,7 +42,7 @@ def main():
     extract_file(local_filename, extract_to='./', rename_to="solver", folder_prefix="yices-")
     os.chmod(path_to_solver_binary, 0o755)
 
-    write_to_file("./solvers.cfg", "./solver/bin/yices-smt2")
+    write_to_file("./solvers-yices2.cfg", "./solver/bin/yices-smt2")
 
     write_version(repo, latest_version)
 

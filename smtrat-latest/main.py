@@ -40,7 +40,7 @@ def main():
     extract_file(local_filename, extract_to='./')
     os.chmod(path_to_solver_binary, 0o755)
 
-    write_to_file("./solvers.cfg", "./smtrat-static")
+    write_to_file("./solvers-smtrat.cfg", "./smtrat-static")
 
     write_version(repo, latest_version)
 
