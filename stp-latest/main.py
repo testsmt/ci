@@ -37,7 +37,7 @@ def main():
     extract_file(local_filename, extract_to='./')
     os.chmod(path_to_solver_binary, 0o755)
 
-    write_to_file("./solvers.cfg", "./stp")
+    write_to_file("./solvers-stp.cfg", "./stp")
 
     write_version(repo, latest_version)
 

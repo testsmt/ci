@@ -45,10 +45,16 @@ jobs:
           cd ..
 
       - name: Check and update solver version
+        id: check_version
         run: |
           source venv/bin/activate
           pip install -r requirements.txt
           python -m cvc5-nightly.main
+
+      - name: Create solver-specific config
+        if: steps.check_version.outputs.version_changed == 'true'
+        run: |
+          cp ./solvers.cfg ./solvers-cvc5-nightly.cfg
 
       - name: Run experiment for each theory
         run: |
@@ -57,7 +63,7 @@ jobs:
           chmod +x ./binaries/z3-4.8.11
           chmod +x ./binaries/z3-4.13.3
           for theory in $(cat ./supported_theories/cvc5); do
-            ./scripts/run_exp.sh "$theory" "$NUM_TESTS" "./solvers.cfg"
+            ./scripts/run_exp.sh "$theory" "$NUM_TESTS" "./solvers-cvc5-nightly.cfg"
           done
 
       - name: Store experiment results

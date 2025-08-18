@@ -39,7 +39,7 @@ def main():
     extract_file(local_filename, extract_to='./')
     os.chmod(path_to_solver_binary, 0o755)
 
-    write_to_file("./solvers.cfg", "./opensmt")
+    write_to_file("./solvers-opensmt2.cfg", "./opensmt")
 
     write_version(solver_name, latest_version)
 

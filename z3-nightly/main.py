@@ -42,7 +42,7 @@ def main():
 
     os.chmod(solver_binary_path, 0o755)
 
-    write_to_file("./solvers.cfg", "./z3/build/z3")
+    write_to_file("./solvers-z3-nightly.cfg", "./z3/build/z3")
 
     for theory in theories:
         prepare_directories(theory)

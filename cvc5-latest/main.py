@@ -43,7 +43,7 @@ def main():
     extract_file(local_filename, extract_to='./', rename_to="solver")
     os.chmod(path_to_solver_binary, 0o755)
 
-    write_to_file("./solvers.cfg", "./solver/bin/cvc5 -q")
+    write_to_file("./solvers-cvc5.cfg", "./solver/bin/cvc5 -q")
 
     write_version(repo, latest_version)
 
