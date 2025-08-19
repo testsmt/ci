@@ -46,7 +46,7 @@ def fetch_mathsat_binary():
         return False, None, None
 
     version = match.group(1)
-    download_url = f"https://mathsat.fbk.eu{href}"
+    download_url = f"https://mathsat.fbk.eu/{href}"
 
     return True, version, download_url
 
