@@ -8,6 +8,11 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: solver-testing
+  cancel-in-progress: false
+  max-in-flight: 1
+
 jobs:
   z3_workflow:
     runs-on: ubuntu-latest
