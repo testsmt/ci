@@ -33,7 +33,10 @@ for db in "$dir"/*.sqlite3; do
         if [ "$status" == "unsoundness" ] && [ "$count" -gt 0 ]; then
             UNSOUNDNESS_FOUND=true
             sqlite3 "$db" "SELECT formula_idx FROM ExpResults WHERE result='unsoundness';" | while read -r formula_idx; do
-                echo "$formula_idx, $file_identifier, $(date '+%Y-%m-%d %H:%M:%S')" >> "$output_file"
+                # Check if this formula_idx + theory combination already exists in the output file
+                if ! grep -q "^$formula_idx, $file_identifier," "$output_file"; then
+                    printf "%s, %s, %s\n" "$formula_idx" "$file_identifier" "$(date '+%Y-%m-%d %H:%M:%S')" >> "$output_file"
+                fi
             done
         fi
     done
