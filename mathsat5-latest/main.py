@@ -25,7 +25,15 @@ def fetch_mathsat_binary():
 
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    link = soup.find('a', href=re.compile(r'download\.php\?file=mathsat-\d+\.\d+\.\d+-linux-x86_64\.tar\.gz'))
+    # Debug: print all links to see what's available
+    print("Available links on MathSAT download page:")
+    for link in soup.find_all('a', href=True):
+        href = link['href']
+        if 'mathsat' in href.lower() or 'download' in href.lower():
+            print(f"  - {href}")
+
+    # Look for the new direct release URL format
+    link = soup.find('a', href=re.compile(r'/release/mathsat-\d+\.\d+\.\d+-linux-x86_64\.tar\.gz'))
 
     if not link:
         print("No matching MathSAT binary found.")
@@ -38,7 +46,7 @@ def fetch_mathsat_binary():
         return False, None, None
 
     version = match.group(1)
-    download_url = f"https://mathsat.fbk.eu/{href}"
+    download_url = f"https://mathsat.fbk.eu{href}"
 
     return True, version, download_url
 
@@ -72,6 +80,8 @@ def main():
             generate_tests(theory, NUM_TESTS)
     else:
         print("Failed to download MathSAT binary.")
+        print("This might be due to changes in the download page structure.")
+        exit(1)
 
 if __name__ == '__main__':
     main()

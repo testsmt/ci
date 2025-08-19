@@ -17,7 +17,7 @@ theories = [
 def main():
     owner = 'ths-rwth'
     repo = 'smtrat'
-    pattern = re.compile(r'smtrat\.tgz')
+    pattern = re.compile(r'smtrat-static\.tar\.gz')
     path_to_solver_binary = "./smtrat-static"
     NUM_TESTS = int(os.getenv("NUM_TESTS", 100))
     latest_release = get_latest_release(owner, repo)
@@ -30,7 +30,10 @@ def main():
 
     if not matching_asset:
         print("No matching asset found.")
-        return
+        print("Available assets:")
+        for asset in latest_release['assets']:
+            print(f"  - {asset['name']}")
+        exit(1)
 
     latest_version = latest_release['tag_name']
     current_version = read_version(repo)

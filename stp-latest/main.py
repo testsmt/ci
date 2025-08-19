@@ -27,7 +27,10 @@ def main():
 
     if not matching_asset:
         print("No matching asset found.")
-        return
+        print("Available assets:")
+        for asset in latest_release['assets']:
+            print(f"  - {asset['name']}")
+        exit(1)
 
     latest_version = latest_release['tag_name']
     current_version = read_version(repo)
