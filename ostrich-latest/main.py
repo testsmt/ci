@@ -31,6 +31,9 @@ def main():
     latest_version = latest_release['tag_name']
     current_version = read_version(repo)
 
+    # Check if version has actually changed
+    version_changed = current_version != latest_version
+
     local_filename = matching_asset['name']
     download_file(matching_asset['browser_download_url'], local_filename)
     extract_file(local_filename, extract_to='./')
@@ -41,11 +44,13 @@ def main():
     write_version(repo, latest_version)
 
     with open(os.getenv('GITHUB_OUTPUT'), 'a') as github_output:
-        github_output.write('version_changed=true\n')
+        github_output.write(f'version_changed={str(version_changed).lower()}\n')
 
-    for theory in theories:
-        prepare_directories(theory)
-        generate_tests(theory, NUM_TESTS)
+    # Only generate tests if version changed
+    if version_changed:
+        for theory in theories:
+            prepare_directories(theory)
+            generate_tests(theory, NUM_TESTS)
 
 if __name__ == '__main__':
     main()
