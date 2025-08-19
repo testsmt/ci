@@ -86,7 +86,7 @@ jobs:
         run: |
             git add ./found_bugs/z3_bugs
             git commit -m "Add unsoundness bugs"
-            git push
+            git push || echo "Push failed, but continuing"
 
       - name: Fail the action if unsoundness is found
         if: env.UNSOUNDNESS_FOUND == 'true'

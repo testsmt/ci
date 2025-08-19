@@ -65,7 +65,7 @@ jobs:
           git pull origin main --rebase || git pull origin main || echo "Pull failed, continuing with local changes"
           git add ./versions
           git commit -m "Update solver version" --only ./versions
-          git push
+          git push || echo "Push failed, but continuing"
 
       - name: Run experiment for each theory
         run: |
@@ -94,7 +94,7 @@ jobs:
         run: |
             git add ./found_bugs/yices2_bugs
             git commit -m "Add unsoundness bugs"
-            git push
+            git push || echo "Push failed, but continuing"
 
       - name: Fail the action if unsoundness is found
         if: env.UNSOUNDNESS_FOUND == 'true'
