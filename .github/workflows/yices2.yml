@@ -9,9 +9,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: solver-testing
+  group: solver-${{ github.workflow }}
   cancel-in-progress: false
-  max-in-flight: 1
 
 jobs:
   yices2_workflow:
