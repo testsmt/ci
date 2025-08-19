@@ -60,6 +60,7 @@ jobs:
           python -m stp-latest.main
 
       - name: Commit and push version changes
+        if: steps.check_version.outputs.version_changed == 'true'
         run: |
           git pull origin main --rebase || git pull origin main || echo "Pull failed, continuing with local changes"
           git add ./versions
