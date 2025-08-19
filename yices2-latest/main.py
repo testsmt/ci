@@ -51,11 +51,10 @@ def main():
     with open(os.getenv('GITHUB_OUTPUT'), 'a') as github_output:
         github_output.write(f'version_changed={str(version_changed).lower()}\n')
 
-    # Only generate tests if version changed
-    if version_changed:
-        for theory in theories:
-            prepare_directories(theory)
-            generate_tests(theory, NUM_TESTS)
+    # Always generate tests (regardless of version change)
+    for theory in theories:
+        prepare_directories(theory)
+        generate_tests(theory, NUM_TESTS)
 
 if __name__ == '__main__':
     main()
