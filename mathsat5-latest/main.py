@@ -33,7 +33,7 @@ def fetch_mathsat_binary():
             print(f"  - {href}")
 
     # Look for the new direct release URL format
-    link = soup.find('a', href=re.compile(r'/release/mathsat-\d+\.\d+\.\d+-linux-x86_64\.tar\.gz'))
+    link = soup.find('a', href=re.compile(r'release/mathsat-\d+\.\d+\.\d+-linux-x86_64\.tar\.gz'))
 
     if not link:
         print("No matching MathSAT binary found.")
